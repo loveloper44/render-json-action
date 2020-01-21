@@ -24,7 +24,7 @@ async function run() {
 
     console.log(result);
 
-    core.setOutput("result", result);
+    core.setOutput("result", JSON.stringify(result));
   } catch (error) {
     core.setFailed(error.message);
   }
