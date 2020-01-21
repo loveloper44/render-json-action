@@ -4,9 +4,14 @@ This action render json file with envrionment variables
 
 ## Example usage
 ```yaml
-uses: loveloper44/render-json-action@v1.0.0
-with:
-  json: jsonFilePath
+- uses: loveloper44/render-json-action@v1.0.0
+  id: render
+  with:
+    json: jsonFilePath
+
+- name: Get the output
+  run: echo "${{ steps.render.outputs.result }}"
+
 ```
 
 ## Json file
