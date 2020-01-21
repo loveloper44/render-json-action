@@ -1,0 +1,12 @@
+name: Render json
+description: "render json file with environment variables"
+inputs:
+  json: # id of input
+    description: "Json file path"
+    required: true
+outputs:
+  result: # id of output
+    description: "Result"
+runs:
+  using: "node12"
+  main: "index.js"
