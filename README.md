@@ -4,7 +4,7 @@ This action render json file with envrionment variables
 
 ## Example usage
 ```yaml
-- uses: loveloper44/render-json-action@v1.0.0
+- uses: loveloper44/render-json-action@x.x.x
   id: render
   with:
     json: jsonFilePath
