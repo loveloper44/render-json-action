@@ -1709,7 +1709,7 @@ async function run() {
 
     const result = render(jsonObj);
 
-    console.log(result);
+    console.log(JSON.stringify(result));
 
     // Write out a new task definition file
     var tempFile = tmp.fileSync({
