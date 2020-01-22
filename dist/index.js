@@ -77,6 +77,12 @@ function render(item) {
         : undefined;
     }
 
+    if (typeof item === "string" && item.match(/^\%f/)) {
+      return process.env[item.substr(3)]
+        ? parseFloat(process.env[item.substr(3)])
+        : undefined;
+    }
+
     if (typeof item === "string" && item.match(/^\%s/)) {
       return process.env[item.substr(3)];
     }
@@ -189,26 +195,37 @@ const { render } = __webpack_require__(190);
 
 async function run() {
   try {
-    const jsonFile = core.getInput("json", {
+    const jsonFilePath = core.getInput("json", {
       required: true
     });
 
     // Parse the task definition
-    const jsonPath = path.isAbsolute(jsonFile)
-      ? jsonFile
-      : path.join(process.env.GITHUB_WORKSPACE, jsonFile);
+    const jsonAbsolutePath = path.isAbsolute(jsonFilePath)
+      ? jsonFilePath
+      : path.join(process.env.GITHUB_WORKSPACE, jsonFilePath);
 
-    if (!fs.existsSync(jsonPath)) {
-      throw new Error(`Json file does not exist: ${jsonFile}`);
+    if (!fs.existsSync(jsonAbsolutePath)) {
+      throw new Error(`Json file does not exist: ${jsonFilePath}`);
     }
 
-    const taskDefContents = require(jsonPath);
+    const jsonObj = require(jsonAbsolutePath);
 
-    const result = render(taskDefContents);
+    const result = render(jsonObj);
 
     console.log(result);
 
-    core.setOutput("result", JSON.stringify(result));
+    // Write out a new task definition file
+    var tempFile = tmp.fileSync({
+      dir: process.env.RUNNER_TEMP,
+      prefix: "json-rendered-",
+      postfix: ".json",
+      keep: true,
+      discardDescriptor: true
+    });
+
+    const newJsonObj = JSON.stringify(result, null, 2);
+    fs.writeFileSync(tempFile.name, newJsonObj);
+    core.setOutput("result", tempFile.name);
   } catch (error) {
     core.setFailed(error.message);
   }
