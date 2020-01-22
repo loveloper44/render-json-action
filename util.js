@@ -17,6 +17,12 @@ export function render(item) {
         : undefined;
     }
 
+    if (typeof item === "string" && item.match(/^\%f/)) {
+      return process.env[item.substr(3)]
+        ? parseFloat(process.env[item.substr(3)])
+        : undefined;
+    }
+
     if (typeof item === "string" && item.match(/^\%s/)) {
       return process.env[item.substr(3)];
     }
