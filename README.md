@@ -6,7 +6,7 @@ and return rendered json file path
 ## Example usage
 
 ```yaml
-- uses: loveloper44/render-json-action@v1.0.0
+- uses: loveloper44/render-json-action@v2.0.2
   id: render
   with:
     json: jsonFilePath
