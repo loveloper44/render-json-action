@@ -1,8 +1,10 @@
 # render-json-action
 
-This action render json file with envrionment variables
+This action render json file with environment variables
+and return rendered json file path
 
 ## Example usage
+
 ```yaml
 - uses: loveloper44/render-json-action@v1.0.0
   id: render
@@ -11,23 +13,46 @@ This action render json file with envrionment variables
 
 - name: Get the output
   run: echo "${{ steps.render.outputs.result }}"
-
 ```
 
 ## Json file
-You have to set env like below
+
+Create input json file
+
+```json
+{
+  "app": {
+    "service_id": "%s ENV_SERVICE_ID"
+  },
+  "db":{
+    "host": "%s ENV_DB_HOST",
+    "port": "%d ENV_DB_PORT",
+    "user_name": "%s ENV_DB_USER_NAME",
+    "user_password": "%s ENV_DB_USER_PASSWORD",
+  }
+}
+```
+
+You can use 4 types like below
 
 - %d number
 - %s string
 - %b boolean
+- %f float
+
+Action will render json file with environment variables
+and return rendered json file path
 
 ```json
 {
-  "profile":{
-    "name": "%s ENV_NAME",
-    "age": "%d ENV_NAME",
+  "app": {
+    "service_id": "TestService"
   },
-  "firends":["%s ENV_FRIEND_URL"],
-  "authroized":"%b ENV_AUTHORIZED"
+  "db":{
+    "host": "localhost",
+    "port": 3306,
+    "user_name": "user",
+    "user_password": "password",
+  }
 }
 ```
