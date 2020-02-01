@@ -828,7 +828,7 @@ function render(item) {
     }
 
     if (typeof item === "string" && item.match(/^\%b/)) {
-      return process.env[item.substr(3)];
+      return process.env[item.substr(3)] === "true";
     }
 
     return item;
